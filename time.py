@@ -1,171 +1,83 @@
+import re
 import numpy as np
-import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
-cmap = 'Blues'
+#cmap = 'Blues'
+#
+mon  = ['monday']   + [ 'segunda' + feira for feira in ['','-feira'] ]
+mon += [ day[:3] for day in mon[:2]]
+tue  = ['tuesday']  + [ 'terça' + feira for feira in ['','-feira'] ]
+tue += [ day[:3] for day in tue[:2] ]
+wed  = ['wednesday'] + [ 'quarta' + feira for feira in ['','-feira'] ]
+wed += [ day[:3] for day in wed[:2] ]
+thu  = ['thursday'] + [ 'quinta' + feira for feira in ['','-feira'] ]
+thu += [ day[:3] for day in thu[:2] ]
+fri  = ['friday'] + [ 'sexta' + feira for feira in ['','-feira'] ]
+fri += [ day[:3] for day in fri[:2] ]
+sat  = ['saturday'] + ['sábado']
+sat += [ day[:3] for day in sat ]
+sun  = ['sunday']   + ['domingo']
+sun += [ day[:3] for day in sun ]
+days = {'0': mon,
+        '1': tue,
+        '2': wed,
+        '3': thu,
+        '4': fri,
+        '5': sat,
+        '6': sun,}
 
-days = np.array(['seg', 'ter', 'qua', 'qui', 'sex','sab'])
-starting_time = 7
-final_time = 22
-period = final_time-starting_time
-h_div = 60
-time_num = period*h_div
-times = np.array([starting_time + i/h_div for i in range(0,time_num+1)])
+def format_interval(interval):
+    interval = re.findall('(\d*)[h:]*(\d*)[-\.]+(\d*)[h:]*(\d*)', interval)
+    if len(interval)<1:
+        t1, t2 = 0,0
+    else:
+        h1, m1, h2, m2 = interval[0]
+        h1 = int(h1) if h1!='' else 0
+        m1 = int(m1) if m1!='' else 0
+        h2 = int(h2) if h2!='' else 0
+        m2 = int(m2) if m2!='' else 0
+        #interval=f'{h1:.0f}:{m1:.0f} até {h2:.0f}:{m2:.0f}'
+        t1 = 60*h1+m1
+        t2 = 60*h2+m2-1
+    return([t1,t2])
 
-grid = pd.DataFrame(index=times, columns=days)
-grid.fillna(0, inplace=True)
-#sns.heatmap(grid)
+def conv_text(times):
+    daytimes = re.findall(r'\(([^\)]+)\)|(\S+)', times)
+    for dt,_ in enumerate(daytimes):
+        daytimes[dt] = daytimes[dt][0] if daytimes[dt][0]!='' else daytimes[dt][1]
+        daytimes[dt] = daytimes[dt].replace('+', '')
+        daytimes[dt] = re.findall(r'(\S+)', daytimes[dt])
 
-days = np.array(['seg', 'ter', 'qua', 'qui', 'sex','sab'])
-starting_time = 7
-final_time = 20
-period = final_time-starting_time
-h_div = 6
-time_num = period*h_div
-times = np.array([starting_time + i/h_div for i in range(0,time_num+1)])
+    formated_daytimes = daytimes.copy()  # it only copies the major list
+    for i,_ in enumerate(formated_daytimes):
+        formated_daytimes[i] = daytimes[i].copy()
 
-grid = pd.DataFrame(index=times, columns=days)
-grid.fillna(0, inplace=True)
-
-morning = [(8, 11.5)]
-afternoon = [(13.5, 17)]
-none = [(-1,-1)]
-all_day = [(starting_time,final_time)]
-
-
-people_times = {
-     'Josafat':
-           [[]+afternoon,
-            [(10.66, 14.83)],
-            []+afternoon,
-            [(10.66, 14.83)],
-            []+afternoon,
-            []],
-    'Rafael':
-           [[(9.75,24)],
-            [(10.66, 12.5)],
-            [(9.75,24)],
-            [(10.66, 12.5)],
-            [(9.75,24)],
-            []],
-     'Juliana':
-           [all_day,
-            all_day,
-            all_day,
-            all_day,
-            all_day,
-            all_day,],
-    'Mariana Sampaio':
-           [[(10,12.5)],
-            [(7,8.83),(16.66,18)],
-            [(10,12.5),(15,18)],
-            [(7,8.83),(16.66,18)],
-            [(12,24)],
-            []],
-    'Ana':
-           [[(10,16.4)],
-            [(13,16.5)],
-            [(10,12)],
-            [],
-            [],
-            []],
-    'Lorena':
-            4*[[(15.75, 18)]] + 2*[[]],
-    'Leonardo':
-           [[],
-            [(10.66,18.5)],
-            [],
-            [(10.66,18.5)],
-            [(13,18.5)],
-            []],
-    'Gutembergue':
-           [[(16.66, 20)],
-            [(14.83,18)],
-            [(16.66, 20)],
-            [(14.83,18)],
-            [(14.83, 18)],
-            []],
-    'Matheus Nilo':
-           [[(13, 24)],
-            [(6,15.5)],
-            [(13, 24)],
-            [],
-            [(13, 24)],
-            []],
-    'Maria Mariana':
-           [[(15.75,16.66)],
-            [(14,16)],
-            [(15.75,16.66)],
-            [(14,16)],
-            [],
-            [],
-            []],
-    'Marcos':
-           [[],
-            [(7, 8.83), (16.5, 18)],
-            [(15.83,18)],
-            [(7, 8.83), (16.5, 18)],
-            [],
-            []],
-    }
+    for dt, intervals in enumerate(daytimes):
+        for i, interval in enumerate(intervals):
+            for d, (day, daynames) in enumerate(days.items()):
+                if interval in daynames:
+                    formated_daytimes[dt].remove(interval)
+                    for intn, anotherinterval in enumerate(daytimes[d]):
+                        formated_daytimes[dt].append(anotherinterval)
+    for dt, intervals in enumerate(formated_daytimes):
+        for i, interval in enumerate(intervals):
+            formated_daytimes[dt][i] = format_interval(interval)
+    print(formated_daytimes)
+    return(formated_daytimes)
 
 
-for k in people_times.keys():
-    for (d, j) in zip(days, people_times[k]):
-        for (m,n) in j:
-            for t in list(times):
-                if t>=m and t<=n:
-                    grid.loc[t][d] += 1
+#times = "1h... 2-3 13:30-15h (7:50-8 16-17h2 ) seg (-2 ...3) (seg + thu)"
+times = "1h... '' 13:30-15h (7:50-8 16-17h2 ) seg (-2 ...3)"
 
-grid.fillna(value=0, inplace=True)
-n_max = grid.max().max()
-print(n_max)
-boundaries = [ int(i) for i in range(0,n_max+1)]
-values = [ i for i in range(1,n_max+1)]
-sns.set_context('talk')
-#fig = plt.figure(figsize=(8,8))
-#ax = fig.add_axes([.1,.1,.8,.8])
-fig, ax = plt.subplots(figsize=(8,8))
-ax = sns.heatmap(grid, yticklabels=h_div, cmap=cmap, cbar_kws={
-    'boundaries': boundaries,
-    'extend':     'both',
-    'extendrect': True,
-    'extendfrac': .1,
-#    'values': values,
-    })#'drawedges':True})
-#ax.set_title('Número de NEXters disponíveis por horário')
-#ax.set_title('Roda com Ciência: pessoas disponíveis por horário')
-ax.set_title('EAGE Student Chapter:\nPessoas disponíveis por horário')
-ax.set_ylabel('Horário')
-ax.set_xlabel('Dia da semana')
+days = conv_text(times)
 
-colorbar = ax.collections[0].colorbar
+grid = np.zeros((24*60,7))
 
-fig.savefig('h.png')
-plt.tight_layout()
+
+
+for d, day in enumerate(days):
+    for times in day:
+        grid[times[0]:times[1], d] += 1
+
+
+plt.imshow(grid, aspect='auto')
 plt.show()
-
-
-
-def cmap_discretize(cmap, N):
-    """Return a discrete colormap from the continuous colormap cmap.
-
-        cmap: colormap instance, eg. cm.jet.
-        N: number of colors.
-
-    Example
-        x = resize(arange(100), (5,100))
-        djet = cmap_discretize(cm.jet, 5)
-        imshow(x, cmap=djet)
-    """
-
-    if type(cmap) == str:
-        cmap = get_cmap(cmap)
-    colors_i = concatenate((linspace(0, 1., N), (0.,0.,0.,0.)))
-    colors_rgba = cmap(colors_i)
-    indices = linspace(0, 1., N+1)
-    cdict = {}
-    for ki,key in enumerate(('red','green','blue')):
-        cdict[key] = [ (indices[i], colors_rgba[i-1,ki], colors_rgba[i,ki]) for i in xrange(N+1) ]
-    # Return colormap object.
-    return matplotlib.colors.LinearSegmentedColormap(cmap.name + "_%d"%N, cdict, 1024)
