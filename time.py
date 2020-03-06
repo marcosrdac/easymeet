@@ -38,7 +38,7 @@ def format_interval(interval):
         m2 = int(m2) if m2!='' else 59 # actually 60
         #interval=f'{h1:.0f}:{m1:.0f} até {h2:.0f}:{m2:.0f}'
         t1 = 60*h1+m1
-        t2 = 60*h2+m2-1
+        t2 = 60*h2+m2
     return([t1,t2])
 
 
@@ -75,24 +75,24 @@ grid = np.zeros((24*60,7))
 
 # bota manhã e tarde, bro
 horarios = {
-	"Nilo": "'' 15... '' 13...",
-	"Rada": "13-17 ...10h40 '' tue -12",
+	"Nilo": "nope 15... nope 13...",
+	"Rada": "13-17 ...10h40 nope tue -12",
 	"Maria": "13-17 seg seg seg seg seg seg",
-	"André": "'' '' '' '' 13-17",
+	"André": "nope nope nope nope 13-17",
 	"Lorena": "13-14:50 -10:40 seg",
-	"Laian": "'' '' '' 16-16:40",
-	"Anderson": "'' '' '' 5-17",
-	"Vinicius": "13- '' seg (-14 16-)",
+	"Laian": "nope nope nope 16-16:40",
+	"Anderson": "nope nope nope 5-17",
+	"Vinicius": "13- nope seg (-14 16-)",
 	"Mari": "10:40- 7-14h seg ter -16h40",
-	"Leticia": "12-16:40 '' seg 14:50- seg",
-	"Gutembergue": "14:50-17:00 '' seg '' seg",
-	"Alber": "13-16:40 '' seg 14:50- seg",
+	"Leticia": "12-16:40 nope seg 14:50- seg",
+	"Gutembergue": "14:50-17:00 nope seg nope seg",
+	"Alber": "13-16:40 nope seg 14:50- seg",
 	"Isaac": "10:40- seg seg seg seg",
-	"Rômulo": "13-16h40 '' seg 14:50- seg",
-	"Annie": "16:40- '' '' 10h40-",
-	"Maria M": "'' 15h-16:30 '' 10:40-16:30",
-	"Vasco": "-14:50 '' seg 10h40- seg",
-	"Milton": "9:45-12:30 '' -9:45 10h40-12:30",
+	"Rômulo": "13-16h40 nope seg 14:50- seg",
+	"Annie": "16:40- nope nope 10h40-",
+	"Maria M": "nope 15h-16:30 nope 10:40-16:30",
+	"Vasco": "-14:50 nope seg 10h40- seg",
+	"Milton": "9:45-12:30 nope -9:45 10h40-12:30",
 }
 
 
@@ -104,12 +104,28 @@ for horario in horarios.values():
             grid[times[0]:times[1], d] += 1
 
 
-data=grid
+start=7
+end=20
+last_day='fri'
+daynames=['mon' ,'tue','wed','thu','fri','sat','sun']
+days_to_show = daynames.index(last_day)
+data=grid[start*60:end*60,:days_to_show+1]
 col_labels = []
 row_labels = []
 fig, ax = plt.subplots(figsize=(4,6))
 # plot grid heatmap
 im = ax.imshow(data, aspect='auto', interpolation='nearest', cmap=cmap)
+# days axis
+ax.set_xticks(np.arange(data.shape[1]))
+ax.set_xticklabels(daynames)
+ax.yaxis.set_ticks(np.arange(0, data.shape[0]+1, 60))
+ax.set_yticklabels([ f'{hour}h' for hour in range(start,end+1,1) ])
+# Let the horizontal axes labeling appear on top.
+ax.tick_params(top=True, bottom=False,
+                labeltop=True, labelbottom=False)
+# Turn spines off and create white grid.
+for edge, spine in ax.spines.items():
+    spine.set_visible(False)
 # create colorbar
 cmap = plt.get_cmap(cmap)
 bounds=np.arange(grid.min(),grid.max()+2, dtype=int)
@@ -126,18 +142,6 @@ cbar.set_ticks(vals + .5)
 cbar.set_ticklabels(vals)
 cbar.ax.set_xlabel('Number of people able for a meeting', rotation=0)
 cbar.outline.set_linewidth(0)
-# days axis
-ax.set_xticks(np.arange(data.shape[1]))
-ax.set_xticklabels(['mon' ,'tue','wed','thu','fri','sat','sun'])
-# Let the horizontal axes labeling appear on top.
-ax.tick_params(top=True, bottom=False,
-                labeltop=True, labelbottom=False)
-# Turn spines off and create white grid.
-for edge, spine in ax.spines.items():
-    spine.set_visible(False)
-# We want to show all ticks...
-ax.set_yticks(np.arange(data.shape[0], 60))
-ax.set_yticklabels(np.arange(0,24))
 # ... and label them with the respective list entries.
 #ax.set_xticklabels([day for day, vals in days.items()[0]])
 
