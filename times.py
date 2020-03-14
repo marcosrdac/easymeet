@@ -11,14 +11,6 @@ DAYNAMESEN = [['mon', 'monday'],
               ['fri', 'friday'],
               ['sat', 'saturday'],
               ['sun', 'sunday']]
-DAYNAMESPT = [[ 'seg', 'segunda', 'segunda-feira',],
-              [ 'ter', 'terça', 'terça-feira',],
-              [ 'qua',  'quarta', 'quarta-feira',],
-              [ 'qui',  'quinta', 'quinta-feira',],
-              [ 'sex',  'sexta', 'sexta-feira',],
-              [ 'sáb',  'sábado', 'sab',],
-              [ 'dom', 'sunday', 'domingo',]]
-DAYNAMES = [ DAYNAMESEN[d]+DAYNAMESPT[d] for d in range(7) ]
 SHORTDAYNAMESEN = [ dayname[0] for dayname in DAYNAMESEN ]
 
 
@@ -53,7 +45,7 @@ def format_interval(interval):
     return(t1,t2)
 
 # rename variables for more readability...
-def edit_daytimes(daytimes, DAYNAMES=DAYNAMES):
+def edit_daytimes(daytimes, DAYNAMES=DAYNAMESEN):
     daytimes = re.findall(r'\(([^\)]+)\)|(\S+)', daytimes)
     for dt,_ in enumerate(daytimes):
         daytimes[dt] = [intervals for intervals in daytimes[dt] if intervals][0]
@@ -87,68 +79,89 @@ def edit_daytimes(daytimes, DAYNAMES=DAYNAMES):
     return(edited_daytimes)
 
 
-def plot_times(edited_daytimes, start_time=7, end_time=20,
-            daynames=SHORTDAYNAMESEN, first_day='sun', last_day='fri',
+def plot_times(intervals,
+            possible_daynames=DAYNAMESEN, also_possibly_en_daynames=True,
+            disp_daynames=None,
             header='', ax_title='', hourhlines=True,
+            first_day=0, last_day=4,
+            start_time=7, end_time=20,
+            cmap='Blues',
             filename=None):
+    # setting possible_daynames
+    if also_possibly_en_daynames:
+        for d in range(7):
+            if possible_daynames[d] != DAYNAMESEN[d]:
+                possible_daynames[d] += DAYNAMESEN[d]
+    if not disp_daynames:
+        disp_daynames = [ dayname[0] for dayname in possible_daynames ]
+
     # creating grid for week times
-    grid = np.zeros((24*60,7))
-    for horario in horarios.values():
-        hdays = edit_daytimes(horario)
+    grid = np.zeros((24*60,7))  # 24 hours, 60 minutes/hour, 7 days
+    # filling weektimes
+    for interval in intervals.values():
+        hdays = edit_daytimes(interval, possible_daynames)
         for d, day in enumerate(hdays):
             daygrid = np.zeros(24*60)
             for times in day:
                 daygrid[times[0]:times[1]] = 1
             grid[:, d] += daygrid
 
-    first_day = first_day if type(first_day)==int else daynames.index(first_day)
-    last_day = last_day if type(last_day)==int else daynames.index(last_day)
-    if first_day==6:
-        daynames.insert(0,daynames.pop())
+    # translating days to numbers
+    if not isinstance(first_day, int):
+        first_day = disp_daynames.index(first_day)
+    if not isinstance(last_day, int):
+        last_day = disp_daynames.index(last_day)
+    # if first day is sunday, roll list so that it is true
+    if first_day == 6:
+        disp_daynames.insert(0, disp_daynames.pop())
         grid = np.roll(grid, 1)
-        first_day=0
+        first_day = 0
+    # cmap input can be a cmap obbject or cmap name string
+    cmap = plt.get_cmap(cmap)
 
-    h1,m1 = format_time(start_time)
-    h2,m2 = format_time(end_time)
-    t1    = h1*60+m1
-    t2    = h2*60+m2
+    # day start and end times: (h1,m1) and (h2,m2)
+    h1, m1 = format_time(start_time)
+    h2, m2 = format_time(end_time)
+    t1 = h1*60+m1
+    t2 = h2*60+m2
 
     # creating canvas
-    fig = plt.figure(figsize=(4,6))
+    fig = plt.figure(figsize=(4, 6))
+    # setting bigger title
     fig.suptitle(header, va='top')
 
     # creating axes
-    ax  = fig.add_axes([.1,0,.88,.85])
+    ax = fig.add_axes([.1,0,.88,.85])
     ax.set_title(ax_title, y=1.08)
 
     # plotting grid heatmap to axes
     img = ax.imshow(grid, aspect='auto', interpolation='nearest', cmap=cmap)
     # configuring axes
     ax.set_xticks(np.arange(grid.shape[1]))
-    ax.set_xticklabels(daynames)
+    ax.set_xticklabels(disp_daynames)
     ax.yaxis.set_ticks(np.arange(0, grid.shape[0]+1, 60))
     #ax.set_yticklabels([ f'{hour}h' for hour in range(h1,h2+1,1) ])
-    ax.set_yticklabels([ f'{hour}h' for hour in range(0,24+1,1) ])
+    ax.set_yticklabels([f'{hour}h' for hour in range(0, 24+1, 1)])
     # limit plot of grid
-    ax.set_ylim((t2,t1))
-    ax.set_xlim((first_day-.5,last_day+.5))
+    ax.set_ylim((t2, t1))
+    ax.set_xlim((first_day-.5, last_day+.5))
     # Let the horizontal axes labeling appear on top.
     ax.tick_params(top=False, bottom=False,
                    left=True, right=False,
                    labelleft=True, labelright=False,
                    labeltop=True, labelbottom=False)
     if hourhlines:
-        for hour in range(0,24+1):
+        for hour in range(0, 24+1):
             ax.axhline(60*hour, color="black", alpha=.05, ls='-')
     # Turn spines off and create
-    for edge, spine in ax.spines.items():
+    for _, spine in ax.spines.items():  # edge, spine
         spine.set_visible(False)
 
     # create colorbar
     visiblegridmin = grid[t1:t2].min()
     visiblegridmax = grid[t1:t2].max()
-    bounds=np.arange(visiblegridmin,visiblegridmax+2, dtype=int)
-    vals=bounds[:-1]
+    bounds = np.arange(visiblegridmin, visiblegridmax+2, dtype=int)
+    vals = bounds[:-1]
     norm = clr.BoundaryNorm(bounds, cmap.N)
     cbar = ax.figure.colorbar(img,
                               fraction=.12,
@@ -164,25 +177,26 @@ def plot_times(edited_daytimes, start_time=7, end_time=20,
     cbar.ax.set_xlabel('Number of people able for a meeting', rotation=0)
     cbar.outline.set_linewidth(0)
 
-    if filename: plt.savefig(filename)
+    # if filename set, save generated figure
+    if filename:
+        plt.savefig(filename)
     plt.show()
+
 
 
 
 
 if __name__ == '__main__':
 
-    cmap = 'Greens'
-    cmap = plt.get_cmap(cmap)
-
-    DAYNAMESPT = [[ 'seg', 'segunda', 'segunda-feira',],
-                  [ 'ter', 'terça', 'terça-feira',],
-                  [ 'qua',  'quarta', 'quarta-feira',],
-                  [ 'qui',  'quinta', 'quinta-feira',],
-                  [ 'sex',  'sexta', 'sexta-feira',],
-                  [ 'sáb',  'sábado', 'sab',],
-                  [ 'dom', 'sunday', 'domingo',]]
-    SHORTDAYNAMESPT = [ dayname[0] for dayname in DAYNAMESPT ]
+    # both portuguese and english
+    possible_daynames_pt = [['seg', 'segunda', 'segunda-feira',],
+                            ['ter', 'terça', 'terça-feira',],
+                            ['qua', 'quarta', 'quarta-feira',],
+                            ['qui', 'quinta', 'quinta-feira',],
+                            ['sex', 'sexta', 'sexta-feira',],
+                            ['sáb', 'sábado', 'sab',],
+                            ['dom', 'sunday', 'domingo',]]
+    disp_daynames_pt = [dayname[0] for dayname in possible_daynames_pt]
 
     #horarios = {
     #        "a": "13...15 (seg + seg + 7-9) (tue + 19:..20)",
@@ -190,27 +204,35 @@ if __name__ == '__main__':
     #        "c": "(13h30-14:20 15...16) nope nope seg (seg + thu)",
     #    }
     # bota manhã e tarde, bro
+
     horarios = {
-            "Nilo":        "nope 15... nope 13...",
-            "Rada":        "13-17 ...10h40 nope tue -12",
-            "Maria":       "13-17 seg seg seg seg seg seg",
-            "André":       "nope nope nope nope 13-17",
-            "Lorena":      "13-14:50 -10:40 seg",
-            "Laian":       "nope nope nope 16-16:40",
-            "Anderson":    "nope nope nope 5-17",
-            "Vinicius":    "13- nope seg (-14 16-)",
-            "Mari":        "10:40- 7-14h seg ter -16h40",
-            "Leticia":     "12-16:40 nope seg 14:50- seg",
-            "Gutembergue": "14:50-17:00 nope seg nope seg",
-            "Alber":       "13-16:40 nope seg 14:50- seg",
-            "Isaac":       "10:40- seg seg seg seg",
-            "Rômulo":      "13-16h40 nope seg 14:50- seg",
-            "Annie":       "16:40- nope nope 10h40-",
-            "Maria M":     "nope 15h-16:30 nope 10:40-16:30",
-            "Vasco":       "-14:50 nope seg 10h40- seg",
-            "Milton":      "9:45-12:30 nope -9:45 10h40-12:30",
+        "Nilo":        "nenhum 15... nenhum 13...",
+        "Rada":        "13-17 ...10h40 nenhum tue -12",
+        "Maria":       "13-17 seg seg seg seg seg seg",
+        "André":       "nenhum nenhum nenhum nenhum 13-17",
+        "Lorena":      "13-14:50 -10:40 seg",
+        "Laian":       "nenhum nenhum nenhum 16-16:40",
+        "Anderson":    "nenhum nenhum nenhum 5-17",
+        "Vinicius":    "13- nenhum seg (-14 16-)",
+        "Mari":        "10:40- 7-14h seg ter -16h40",
+        "Leticia":     "12-16:40 nenhum seg 14:50- seg",
+        "Gutembergue": "14:50-17:00 nenhum seg nenhum seg",
+        "Alber":       "13-16:40 nenhum seg 14:50- seg",
+        "Isaac":       "10:40- seg seg seg seg",
+        "Rômulo":      "13-16h40 nenhum seg 14:50- seg",
+        "Annie":       "16:40- nenhum nenhum 10h40-",
+        "Maria M":     "nenhum 15h-16:30 nenhum 10:40-16:30",
+        "Vasco":       "-14:50 nenhum seg 10h40- seg",
+        "Milton":      "9:45-12:30 nenhum -9:45 10h40-12:30",
         }
 
-    plot_times(horarios, start_time='6:30', end_time=20.5,
-            first_day='mon', last_day='fri',
-            header="EAGE Student Chapter - UFBa (2020.1)", filename='times.png')
+
+    plot_times(horarios,
+               possible_daynames=possible_daynames_pt,
+               also_possibly_en_daynames=True,
+               first_day='seg', last_day='sex',
+               header="EAGE Student Chapter - UFBa (2020.1)",
+               start_time='6:30', end_time=20.5,
+               cmap='Greens',
+               hourhlines=True,
+               filename='times.png')
