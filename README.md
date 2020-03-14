@@ -1,5 +1,8 @@
 # easymeet
 
-Tool created to help teams to set meetings up.
+Tool made to help teams find the most optimized time for a meeting.
+
+
+## Example
 
 ![](times.png)
