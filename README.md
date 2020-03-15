@@ -62,15 +62,41 @@ Any string other than pre-defined or used defined names for days of the week wil
 
 After that, a function from easymeet's package can be imported and applied to to dictionary:
 ```
+from easymeet import plot_free_schedule
+
 plot_free_schedule(people,
                    header="It is a title",
                    filename='path/to/filename.png')
 ```
 
-The filename keyword saves image at its value ("path/to/filename.png"). Look at "example_custom.py" in order to know other ways to configure the chart.
+The filename keyword saves image at its value ("path/to/filename.png"). Look at "example_custom.py" in order to know other ways to configure the chart. You can also import values like this from a text file:
+
+```
+# textfile.txt
+
+Person A: 17-22 none 20-22 none none none none
+Person B: 13h30-22h30 mon mon mon mon - -
+Person C: nope nope nope nope nope - -
+Person D: nope nope 17-20h20 nope nope - -
+Person E: (9h10-10h20 13h30-18h10) 16h- mon tue - - -
+```
+
+```
+# plot_from_textfile.py
+
+from re import findall
+from easymeet import plot_free_schedule, file2dict
+
+input_file = 'textfile.txt'
+people_free_schedule = file2dict()
+
+plot_free_schedule(people_free_schedule)
+```
+
+As it might be faster to type without bloat Python dicts syntax. This is shown in "example_input_file.txt" and "example_input_file.py".
 
 
-# Other examples
+# Other example products
 
 ## Explained
 <p align="center"><img src="example/example.png" alt="example">
