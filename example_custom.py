@@ -14,7 +14,7 @@ labels_para_dias = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom']
 
 horarios = {
     "Nilo":        "nenhum 15... nenhum 13...",
-    "Rada":        "13-17 ...10h40 nenhum tue -12",
+    "Rada":        "13-17 ...10h40 nenhum ter -12",
     "Maria":       "13-17 seg seg seg seg seg seg",
     "André":       "nenhum nenhum nenhum nenhum 13-17",
     "Lorena":      "13-14:50 -10:40 seg",
@@ -44,3 +44,6 @@ plot_free_schedule(horarios,
             format24=True,
             hourhlines=True,
             filename='example/eagescufba.png')
+
+# access matplotlib's site for more colormap (cmaps) names:
+# https://matplotlib.org/3.1.1/gallery/color/colormap_reference.html
