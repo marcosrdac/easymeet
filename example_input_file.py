@@ -15,4 +15,4 @@ plot_free_schedule(people_free_schedule,
                    cmap='PuRd',
                    format24=True,
                    hourhlines=True,
-                   filename='example/ardur.png')
+                   filename='example/rpg.png')
