@@ -141,6 +141,7 @@ def plot_free_schedule(intervals,
         disp_daynames.insert(0, disp_daynames.pop())
         grid = np.roll(grid, 1)
         first_day = 0
+        last_day += 1
     if format24:
         hours = [f'{hour}h' for hour in range(0, 24+1, 1)]
     else:

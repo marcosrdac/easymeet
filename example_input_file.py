@@ -8,11 +8,11 @@ input_file = 'example_input_file.txt'
 people_free_schedule = file2dict(input_file)
 
 plot_free_schedule(people_free_schedule,
-                   also_possibly_en_daynames=True,
-                   first_day=0, last_day=5,
-                   header="EAGE Student Chapter - UFBa (2020.1)",
-                   start_time='6:30', end_time=20.5,
-                   cmap='Greens',
+                   first_day='sunday', last_day='saturday',
+                   header="Ardur" + '\n' + \
+                          "When to play RPG",
+                   start_time='7:30', end_time='24',
+                   cmap='PuRd',
                    format24=True,
                    hourhlines=True,
-                   filename='example/eagescufba.png')
+                   filename='example/ardur.png')

@@ -1,18 +1,5 @@
-Nilo:        none 15... none 13...
-Rada:        13-17 ...10h40 none tue -12
-Maria:       13-17 mon mon mon mon mon mon
-André:       none none none none 13-17
-Lorena:      13-14:50 -10:40 mon
-Laian:       none none none 16-16:40
-Anderson:    none none none 5-17
-Vinicius:    13- none mon (-14 16-)
-Mari:        10:40- 7-14h mon tue -16h40
-Leticia:     12-16:40 none mon 14:50- mon
-Gutembergue: 14:50-17:00 none mon none mon
-Alber:       13-16:40 none mon 14:50- mon
-Isaac:       10:40- mon mon mon mon
-Rômulo:      13-16h40 none mon 14:50- mon
-Annie:       16:40- none none 10h40-
-Maria M:     none 15h-16:30 none 10:40-16:30
-Vasco:       -14:50 none mon 10h40- mon
-Milton:      9:45-12:30 none -9:45 10h40-12:30
+Allana: 17-22 none 20-22 none none none none
+Antonio: 13h30-22h30 mon mon mon mon - -
+Gustavo: nope nope nope nope nope - -
+Duarte: nope nope 17-20h20 nope nope - -
+Marcos: (9h10-10h20 13h30-18h10) 16h- mon tue - - -
