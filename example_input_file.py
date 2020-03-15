@@ -9,7 +9,7 @@ people_free_schedule = file2dict(input_file)
 plot_free_schedule(people_free_schedule,
                    header="Ardur" + '\n' + \
                           "When to play RPG",
-                   cbar_label="Number of people able to play RPG",
+                   cbar_label="Number of people able to play",
                    first_day='sunday', last_day='saturday',
                    start_time='7:30', end_time='24',
                    cmap='PuRd',
