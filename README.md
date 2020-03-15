@@ -28,7 +28,7 @@ I wanted to be able to write intervals fast, so this program accepts time in man
 ```
 people = {
   "person a": "7-9h30 10...11:30 mon tue ..."
-  # as you can see, pure "..." also means all day
+  # as you can see, pure "..." also means all day.
 }
 ```
 
@@ -46,7 +46,14 @@ people = {
 
 Any string other than pre-defined or used defined days of the week will be treated as a null interval. So "none" above would mean the same as 'nope' or 'something' would: an empty interval. More realistically, "none" here will mean "this person is not available in this day".
 
-Look at the exemple files for more practical understanding.
+After that, a function from easymeet's package can be imported and applied to to dictionary:
+```
+plot_free_schedule(people,
+                   header="It is a title",
+                   filename='path/to/filename.png')
+```
+
+The filename keyword saves image at its value ("path/to/filename.png"). Look at "example_custom.py" in order to know other ways to configure the chart.
 
 
 # Other examples
