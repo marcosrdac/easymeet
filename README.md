@@ -2,12 +2,26 @@
 
 Tool made to help teams find the most optimized time for a meeting.
 
-![eagescufba](example/eagescufba.png)
+<p align="center"><img height="40%" src="example/eagescufba.png" alt="eagescufba">
 
 
-## instalation
+## Dependencies
 
-~Gotta write here...~
+You need `Python 3+` and `pip 3+` in order to use this script.
+
+| Python libraries needed |
+| - |
+| numpy |
+| matplotlib |
+| pyqt5 |
+
+If your distribution still calls Python as "python2", instead of "python3" (you can tell that by sending `realpath $(which python)`), as debian and debian based distros do (Ubuntu and Linux Mint are examples), use pip3 instead of pip to install dependencies with:
+
+```sh
+pip install --user numpy, matplotlib, pyqt5
+# or, if  python3 isn't default,
+pip3 install --user numpy, matplotlib, pyqt5
+```
 
 
 ## Usage
@@ -59,11 +73,6 @@ The filename keyword saves image at its value ("path/to/filename.png"). Look at 
 # Other examples
 
 ![example](example/example.png)
-
-
-# To do
-
-Implement reading intervals from a csv file.
 
 
 ## Contact

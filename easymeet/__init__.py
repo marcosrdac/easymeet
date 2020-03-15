@@ -1,7 +1,7 @@
-import re
 import numpy as np
 import matplotlib.colors as clr
 import matplotlib.pyplot as plt
+from  re import findall
 
 
 DAYNAMESEN = [['mon', 'monday'],
@@ -18,7 +18,7 @@ def format_time(time):
         h = int(time)
         m = round(60*(time-h))
     except ValueError:
-        time_found = re.findall('(\d+)[h:]*(\d*)|(\d)+\.?(\d)', time)
+        time_found = findall('(\d+)[h:]*(\d*)|(\d)+\.?(\d)', time)
         h1, m1, h2, m2 = time_found[0]
         if h1 or m1:
             h = int(h1) if h1 else 0
@@ -29,7 +29,7 @@ def format_time(time):
     return(h,m)
 
 def format_interval(interval):
-    interval = re.findall('(\d*)[h:]*(\d*)[-\.]+(\d*)[h:]*(\d*)', interval)
+    interval = findall('(\d*)[h:]*(\d*)[-\.]+(\d*)[h:]*(\d*)', interval)
     if interval:
         h1, m1, h2, m2 = interval[0]
         h1 = int(h1) if h1 else 0
@@ -45,12 +45,23 @@ def format_interval(interval):
         t1, t2 = 0,0
     return(t1,t2)
 
+
+def file2dict(filename):
+    dic = {}
+    with open(filename) as f:
+        for line in f.readlines():
+            res = findall(r'([\s\w]*):?\s*(.+)', line)
+            if len(res)>0:
+                res = res[0]
+                dic[res[0]] = res[1]
+    return(dic)
+
 # rename variables for more readability...
 def edit_daytimes(daytimes, possible_daynames=DAYNAMESEN):
-    daytimes = re.findall(r'\(([^\)]+)\)|(\S+)', daytimes)
+    daytimes = findall(r'\(([^\)]+)\)|(\S+)', daytimes)
     for dt,_ in enumerate(daytimes):
         daytimes[dt] = [intervals for intervals in daytimes[dt] if intervals][0]
-        daytimes[dt] = re.findall(r'(\S+)', daytimes[dt].replace('+', ''))
+        daytimes[dt] = findall(r'(\S+)', daytimes[dt].replace('+', ''))
 
     # copying list and sublists
     edited_daytimes = [ intervals[:] for intervals in daytimes ]
