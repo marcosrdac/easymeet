@@ -2,7 +2,7 @@
 
 Tool made to help teams find the most optimized time for a meeting.
 
-<p align="center"><img height="40%" src="example/eagescufba.png" alt="eagescufba">
+<p align="center"><img height="35%" src="example/eagescufba.png" alt="eagescufba">
 
 
 ## Dependencies
@@ -72,7 +72,7 @@ The filename keyword saves image at its value ("path/to/filename.png"). Look at 
 
 # Other examples
 
-![example](example/example.png)
+<p align="center"><img height="35%" src="example/example.png" alt="example">
 
 
 ## Contact
