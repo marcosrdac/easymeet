@@ -100,6 +100,7 @@ def plot_free_schedule(intervals,
             start_time=7, end_time=20,
             format24=False,
             cmap='Blues',
+            cbar_label='Number of people able for a meeting',
             show=True,
             filename=None):
     # setting possible_daynames
@@ -209,7 +210,7 @@ def plot_free_schedule(intervals,
                               ticks=bounds)
     cbar.set_ticks(vals + .5)
     cbar.set_ticklabels(vals)
-    cbar.ax.set_xlabel('Number of people able for a meeting', rotation=0)
+    cbar.ax.set_xlabel(cbar_label, rotation=0)
     cbar.outline.set_linewidth(0)
 
     # if filename set, save generated figure
