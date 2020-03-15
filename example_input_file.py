@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from re import findall
 from easymeet import plot_free_schedule, file2dict
 
 
