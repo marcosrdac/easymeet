@@ -13,5 +13,5 @@ people_free_schedules = {
 
 plot_free_schedule(people_free_schedules,
                    header="Ease scheduling meetings for your team!" + '\n' +
-                          "(Dark colors equals good)",
+                          "(Darker color equals good time)",
                    filename='example/example.png')

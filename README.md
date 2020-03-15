@@ -1,8 +1,8 @@
 # easymeet
 
-![eagescufba](example/eagescufba.png)
-
 Tool made to help teams find the most optimized time for a meeting.
+
+![eagescufba](example/eagescufba.png)
 
 
 ## instalation
@@ -52,3 +52,16 @@ Look at the exemple files for more practical understanding.
 # Other examples
 
 ![example](example/example.png)
+
+
+# To do
+
+Implement reading intervals from a csv file.
+
+
+## Contact
+
+  - **Name:** Marcos Conceição
+  - **E-mail:** [marcosrdac@gmail.com](mailto:marcosrdac@gmail.com)
+  - **GitHub:** [marcosrdac](github.com/marcosrdac)
+  - **Website:** [marcosrdac.github.io](http://marcosrdac.github.io)
