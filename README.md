@@ -72,11 +72,11 @@ The filename keyword saves image at its value ("path/to/filename.png"). Look at 
 
 # Other examples
 
-## Just an explained
-<p align="center"><img height="20%" src="example/example.png" alt="example">
+## Explained
+<p align="center"><img src="example/example.png" alt="example">
 
 ## When to play RPG
-<p align="center"><img height="20%" src="example/example.png" alt="example">
+<p align="center"><img src="example/ardur.png" alt="RPG">
 
 
 ## Contact
