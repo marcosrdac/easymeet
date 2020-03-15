@@ -163,9 +163,9 @@ def plot_free_schedule(intervals,
 
     # creating axes
     if format24:
-        ax_dims = [.1,0,.88,.85]
+        ax_dims = [.1,.01,.88,.85]
     else:
-        ax_dims = [.15,0,.82,.85]
+        ax_dims = [.15,.01,.82,.85]
     ax = fig.add_axes(ax_dims)
     ax.set_title(ax_title, y=1.08)
 
