@@ -14,7 +14,7 @@ More examples (in English) can be found below in "Other example products".
 Download easymeet's zipped package directly from here (and unzip it) or clone it from a shell terminal:
 ```sh
 git clone https://github.com/marcosrdac/easymeet
-cd easymeet  # enter the folder for next operations
+cd easymeet  # enter cloned folder for next operations
 ```
 
 ### Easy/potentially messier way
