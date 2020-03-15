@@ -58,7 +58,7 @@ people = {
 }
 ```
 
-Any string other than pre-defined or used defined days of the week will be treated as a null interval. So "none" above would mean the same as 'nope' or 'something' would: an empty interval. More realistically, "none" here will mean "this person is not available in this day".
+Any string other than pre-defined or used defined names for days of the week will be treated as a null interval. So "none" above would mean the same as 'nope' or 'nothing' would: an empty interval. More realistically, "none" here means "this person is not available in this day".
 
 After that, a function from easymeet's package can be imported and applied to to dictionary:
 ```
