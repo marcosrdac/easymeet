@@ -7,6 +7,14 @@ Tool made to help teams find the most optimized time for a meeting.
 
 ## Dependencies
 
+Download easymeet's zipped package directly from here (and unzip it) or clone it from a shell terminal:
+```sh
+git clone https://github.com/marcosrdac/easymeet
+cd easymeet  # enter the folder for next operations
+```
+
+### Easy/potentially messier way
+
 You need `Python 3+` and `pip 3+` in order to use this script.
 
 | Python libraries needed |
@@ -23,10 +31,23 @@ pip install --user numpy, matplotlib, pyqt5
 pip3 install --user numpy, matplotlib, pyqt5
 ```
 
+### Isolated way
+
+Just install pipenv and do a `pipenv install`.
+```sh
+pip install --user pipenv
+pipenv install
+```
+
+Before using the tool, always enter the isolated environment with:
+```
+pipenv shell
+```
+
 
 ## Usage
 
-Basically create a Python dictionary with people names as keys and their available intervals per day as values. Hours and minutes are separated by colons (":") or "h"'s. Interval starts and ends are separated by minus signs ("-") or ellipsis ("..."). For example:
+Basically file with a Python dictionary within it containing people names as keys and their available intervals per day as values. Hours and minutes are separated by colons (":") or "h"'s. Interval starts and ends are separated by dash signs ("-") or ellipsis ("..."). For example:
 
 ```
 people = {
