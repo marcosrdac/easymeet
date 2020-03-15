@@ -12,7 +12,7 @@ Tool made to help teams find the most optimized time for a meeting.
 
 ## Usage
 
-Basically create a Python dictionary with people names as keys and their available intervals per day as values. Hours and minutes are separated by colons (":") or "h"'s. Interval starts and ends are separated by minus signs ("-") or reticences ("..."). For example:
+Basically create a Python dictionary with people names as keys and their available intervals per day as values. Hours and minutes are separated by colons (":") or "h"'s. Interval starts and ends are separated by minus signs ("-") or ellipsis ("..."). For example:
 
 ```
 people = {
