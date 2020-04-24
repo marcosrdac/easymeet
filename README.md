@@ -7,6 +7,15 @@ Tool made to help teams find the most optimized time for a meeting. A dark regio
 In this picture, we see that there is a high density of people able for meetings on Thursday evening endings (*Qui* is short for Thursday in Portuguese). It is right there that your team should schedule a meeting! More examples (in English) can be found below in **Other example products** section.
 
 
+## Instalation
+
+Download easymeet's zipped package directly from here (and unzip it) or clone it from a shell terminal:
+```sh
+git clone https://github.com/marcosrdac/easymeet
+cd easymeet  # enter cloned folder for next operations
+```
+
+
 ## Dependencies
 
 ### Easy/potentially messier way
@@ -19,7 +28,7 @@ You need `Python 3+` and `pip 3+` in order to use this script.
 | matplotlib |
 | pyqt5 |
 
-If your distribution still calls Python as "python2", instead of "python3" (you can tell that by sending `realpath $(which python)`), as debian and debian based distros do (Ubuntu and Linux Mint are examples), use pip3 instead of pip to install dependencies with:
+If your distribution still calls Python as "python2", instead of "python3" (you can tell that by sending `realpath $(which python)`), as Debian and Debian based distros do (last checked in october 2019; Ubuntu and Linux Mint were tested distros), use pip3 instead of pip to install dependencies:
 
 ```sh
 pip install --user numpy, matplotlib, pyqt5
@@ -38,14 +47,6 @@ pipenv install
 Before using the tool, always enter the isolated environment with:
 ```
 pipenv shell
-```
-
-## Instalation
-
-Download easymeet's zipped package directly from here (and unzip it) or clone it from a shell terminal:
-```sh
-git clone https://github.com/marcosrdac/easymeet
-cd easymeet  # enter cloned folder for next operations
 ```
 
 
