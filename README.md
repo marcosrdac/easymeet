@@ -4,16 +4,10 @@ Tool made to help teams find the most optimized time for a meeting. A dark regio
 
 <p align="center"><img src="example/eagescufba.png" alt="eagescufba">
 
-In this picture, we see that there is a high density of people able for meetings on thursday evening endings. It is right there that your team should schedule a meeting! More examples (in English) can be found below in **Other example products** section.
+In this picture, we see that there is a high density of people able for meetings on Thursday evening endings (*Qui* is short for Thursday in Portuguese). It is right there that your team should schedule a meeting! More examples (in English) can be found below in **Other example products** section.
 
 
 ## Dependencies
-
-Download easymeet's zipped package directly from here (and unzip it) or clone it from a shell terminal:
-```sh
-git clone https://github.com/marcosrdac/easymeet
-cd easymeet  # enter cloned folder for next operations
-```
 
 ### Easy/potentially messier way
 
@@ -44,6 +38,14 @@ pipenv install
 Before using the tool, always enter the isolated environment with:
 ```
 pipenv shell
+```
+
+## Instalation
+
+Download easymeet's zipped package directly from here (and unzip it) or clone it from a shell terminal:
+```sh
+git clone https://github.com/marcosrdac/easymeet
+cd easymeet  # enter cloned folder for next operations
 ```
 
 
