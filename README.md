@@ -136,4 +136,4 @@ As it might be faster to type without bloat Python dicts syntax. This is shown i
   - **Name:** Marcos Conceição
   - **E-mail:** [marcosrdac@gmail.com](mailto:marcosrdac@gmail.com)
   - **GitHub:** [marcosrdac](github.com/marcosrdac)
-  - **Website:** [marcosrdac.github.io](http://marcosrdac.github.io)
+  - **Website:** [www.marcosrdac.com](www.marcosrdac.com)
